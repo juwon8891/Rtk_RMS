@@ -1,0 +1,56 @@
+version: "3.8"
+
+services:
+  nginx:
+    image: nginx:1.19.7-alpine
+    restart: always
+    volumes:
+      - ./services/revproxy/nginx/conf.d:/etc/nginx/conf.d
+    ports:
+      - "80:80"
+    networks:
+      - backend
+
+  frontend:
+    image: node:14.16.0-alpine
+    working_dir: /app
+    command: >
+      sh -c "yarn && yarn serve"
+    volumes:
+      - ./services/frontend:/app
+    environment:
+      VUE_APP_API_URI: "http://localhost/api/v1/"
+    networks:
+      - backend
+
+  mongo:
+    image: mongo:4.4.4-bionic
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: rtkrms
+    networks:
+      - backend
+
+  mongo-express:
+    image: mongo-express:0.54.0
+    restart: always
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: password
+      ME_CONFIG_SITE_BASEURL: /express/
+    networks:
+      - backend
+
+  agendash:
+    image: agenda/agendash:latest
+    restart: always
+    environment:
+      MONGODB_URI: mongodb://root:password@mongo
+      COLLECTION: rtkagenda
+    networks:
+      - backend
+
+networks:
+  backend:

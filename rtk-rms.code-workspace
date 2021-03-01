@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "services\\server"
+		},
+		{
+			"path": "services\\frontend"
+		},
+		
+	],
+	"settings": {}
+}

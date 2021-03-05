@@ -8,17 +8,19 @@
 
 1. Clone this repository with submodule include
   * `git clone --recurse-submodules ${repository_uri}`
-2. Run docker-compose to setup db, reverse proxy and other utility services
+2. Create .env
+  * you can refer .env.template
+3. Run docker-compose to setup db, reverse proxy and other utility services
   * `docker-compose -f docker-compose.dev.yml up -d`
-3. Run backend server
+4. Run backend server
   * go to services/backend
   * create .env (check README.md)
   * `yarn start`
-4. Run frontend
+5. Run frontend
   * go to services/frontend
   * create .env (check README.md)
   * `yarn serve`
-5. You can access via http://localhost
+6. You can access via http://localhost
   * frontend: http://localhost/
   * apidocs: http://localhost/api/v1/docs
   * express: http://localhost/express

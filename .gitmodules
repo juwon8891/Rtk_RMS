@@ -1,0 +1,6 @@
+[submodule "services/server"]
+	path = services/server
+	url = git@gitlab.com:rtk-sjm/webosrtkadmin/admin-server.git
+[submodule "services/frontend"]
+	path = services/frontend
+	url = git@gitlab.com:rtk-sjm/webosrtkadmin/admin-frontend.git

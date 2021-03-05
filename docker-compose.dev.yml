@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  nginx:
+    image: nginx:1.19.7-alpine
+    restart: always
+    volumes:
+      - ./services/revproxy/nginx/templates:/etc/nginx/templates
+    environment:
+      - HOST_URI
+    ports:
+      - "80:80"
+    networks:
+      - backend
+
+  mongo:
+    image: mongo:4.4.4-bionic
+    restart: always
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: rtkrms
+    networks:
+      - backend
+
+  mongo-express:
+    image: mongo-express:0.54.0
+    restart: always
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: password
+      ME_CONFIG_SITE_BASEURL: /express/
+    networks:
+      - backend
+
+  agendash:
+    image: agenda/agendash:latest
+    restart: always
+    environment:
+      MONGODB_URI: mongodb://root:password@mongo
+      COLLECTION: rtkagenda
+    networks:
+      - backend
+
+networks:
+  backend:

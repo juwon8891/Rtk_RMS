@@ -5,27 +5,19 @@ services:
     image: nginx:1.19.7-alpine
     restart: always
     volumes:
-      - ./services/revproxy/nginx/conf.d:/etc/nginx/conf.d
+      - ./services/revproxy/nginx/templates:/etc/nginx/templates
+    environment:
+      - HOST_URI
     ports:
       - "80:80"
-    networks:
-      - backend
-
-  frontend:
-    image: node:14.16.0-alpine
-    working_dir: /app
-    command: >
-      sh -c "yarn && yarn serve"
-    volumes:
-      - ./services/frontend:/app
-    environment:
-      VUE_APP_API_URI: "http://localhost/api/v1/"
     networks:
       - backend
 
   mongo:
     image: mongo:4.4.4-bionic
     restart: always
+    ports:
+      - '27017:27017'
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: password

@@ -2,10 +2,10 @@ version: "3.8"
 
 services:
   nginx:
-    image: nginx:1.19.7-alpine
+    image: nginx:1.19.8-alpine
     restart: always
     volumes:
-      - ./services/revproxy/nginx/templates:/etc/nginx/templates
+      - ./services/revproxy/nginx/templates.dev:/etc/nginx/templates
     environment:
       - HOST_URI
     ports:

@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  nginx:
+    image: nginx:1.19.8-alpine
+    restart: always
+    volumes:
+      - ./services/revproxy/nginx/templates.prod:/etc/nginx/templates
+    environment:
+      - HOST_URI
+    ports:
+      - "80:80"
+    networks:
+      - backend
+
+  frontend:
+    image: registry.gitlab.com/rtk-sjm/webosrtkadmin/admin-frontend:0.1.1
+    build:
+      context: ./services/frontend
+    restart: always
+    environment:
+      - VUE_APP_API_URI=${API_URI}/api/v1
+      - VUE_APP_API_PROTO=http
+    networks:
+      - backend
+
+  mongo:
+    image: mongo:4.4.4-bionic
+    restart: always
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: rtkrms
+    networks:
+      - backend
+
+networks:
+  backend:

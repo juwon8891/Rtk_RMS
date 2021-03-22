@@ -6,10 +6,12 @@ services:
     restart: always
     volumes:
       - ./services/revproxy/nginx/templates.dev:/etc/nginx/templates
+      - ./services/revproxy/nginx/ssl:/etc/ssl
     environment:
-      - HOST_URI
+      - PROXY_PASS_BACKEND
+      - PROXY_PASS_FRONTEND
     ports:
-      - "80:80"
+      - "443:443"
     networks:
       - backend
 

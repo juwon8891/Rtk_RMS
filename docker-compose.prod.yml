@@ -6,21 +6,23 @@ services:
     restart: always
     volumes:
       - ./services/revproxy/nginx/templates.prod:/etc/nginx/templates
+      - ./services/revproxy/nginx/ssl:/etc/ssl
     environment:
-      - HOST_URI
+      - PROXY_PASS_BACKEND
+      - PROXY_PASS_FRONTEND
     ports:
-      - "80:80"
+      - "443:443"
     networks:
       - backend
 
   frontend:
-    image: registry.gitlab.com/rtk-sjm/webosrtkadmin/admin-frontend:0.1.1
+    image: registry.gitlab.com/rtk-sjm/webosrtkadmin/admin-frontend:0.2.0
     build:
       context: ./services/frontend
     restart: always
     environment:
       - VUE_APP_API_URI=${API_URI}/api/v1
-      - VUE_APP_API_PROTO=http
+      - VUE_APP_API_PROTO=https
     networks:
       - backend
 

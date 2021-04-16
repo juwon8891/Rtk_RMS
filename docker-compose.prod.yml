@@ -16,7 +16,7 @@ services:
       - backend
 
   frontend:
-    image: registry.gitlab.com/rtk-sjm/webosrtkadmin/admin-frontend:0.2.0
+    image: registry.gitlab.com/rtk-sjm/webosrtkadmin/admin-frontend:0.2.2
     build:
       context: ./services/frontend
     restart: always
